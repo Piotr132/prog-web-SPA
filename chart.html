@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Store form data</title>
+	<title>SPA profit calculator</title>
 	<meta charset="UTF-8">
 </head>
-<body>
+<body onload="backupCanvas()">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
-<canvas id="myChart" width="800" height="400"></canvas>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+	<canvas id="myChart" width="800" height="400"></canvas>
 	<script>
 		var ctx = document.getElementById("myChart").getContext("2d");
 		var myChart = new Chart(ctx, {
@@ -28,7 +30,7 @@
 				<!--"Red", "Blue", "Yellow", "Green", "Purple", "Orange"], -->
 				datasets: [{
 					label: 'Microsoft (MSFT)',
-					data: [69.4100, 69.3000, 69.0800, 68.8100, 69.0000, 68.9400, 69.0400, 69.3100, 68.4600, 68.3800],
+					data: [69.4100, 69.3000, 69.0800, 68.8100, 69.0300, 68.9400, 69.0400, 69.3100, 68.4600, 68.3800],
 					backgroundColor: "rgba(54,162,235,0.4)",
 					borderColor: "rgba(54,162,235,1)",
 					borderWidth: 1,
@@ -71,7 +73,55 @@
 				
 			}
 		});
+		
+		function backupCanvas() {
+			var myChartOriginal = jQuery.extend(true, {}, myChart);
+			console.log(myChartOriginal);
+			return myChartOriginal;
+		}
+		
+		function getRandomInt(min, max) {
+			randValue= Math.floor(Math.random() * (max - min + 1)) + min;
+			//console.log("Field number " + randValue);
+			return randValue;
+		}
+		
+		function getRandomWithNeg(min, max) {
+			randValue = Math.random() * (max - min + 1) + min;
+			randValue = randValue.toFixed(2);
+			randValue *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+			console.log("Random stock price value: " + randValue);
+			return randValue;
+		}
+		
+		function addDataAndRefreshChart() {
+			for (var i=0; i < myChart.data.datasets.length; i++) {
+				fieldNo = getRandomInt(0,(myChart.data.datasets[0].data.length)-1);
+				var updatedValue = myChart.data.datasets[i].data[fieldNo] + getRandomWithNeg(-1,1);
+				updatedValue = Math.round((updatedValue + 0.00001) * 100) / 100;
+				myChart.data.datasets[i].data[fieldNo] = updatedValue;
+			}
+
+			myChart.update();
+		}
+
 	</script>
+
+	<button onclick="addDataAndRefreshChart()">Modify data and refresh chart</button>
+	<button onclick="location.reload()">Reset chart</button>
+
+	<p><b>Please provide your KGHM stock shares price: (input, with +/- selector)</b></p>
+	<input type="number" id="KGHMprovidedPrice" value="100.00" step="0.01" min="0.01">
+	<p><b>Number of shares:</b></p>
+	<input type="number" id="KGHMnumberofShares" value="1" step="1" min="0">
+
+
+	<h2>Dev comment (how it should work):</h2>
+	<p>If latest price from JSON > provided price: display "profit" + profit value (in green)</p>
+	<p>If latest price from JSON < provided price: display "loss" + loss value (in red)</p>
+	<p>If latest price from JSON == provided price: display "no profit" (in grey)</p>
+
 
 </body>
 </html>
+
