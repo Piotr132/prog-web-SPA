@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SPA profit calculator</title>
+	<meta charset="UTF-8">
+</head>
+<body onload="backupCanvas()">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<canvas id="myChart" width="800" height="400"></canvas>
+	<script>
+		var ctx = document.getElementById("myChart").getContext("2d");
+		var myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: [
+				"2017-05-01",
+				"2017-05-02",
+				"2017-05-03",
+				"2017-05-04",
+				"2017-05-05",
+				"2017-05-08",
+				"2017-05-09",
+				"2017-05-10",
+				"2017-05-11",
+				"2017-05-12",
+				],
+				<!--"Red", "Blue", "Yellow", "Green", "Purple", "Orange"], -->
+				datasets: [{
+					label: 'Microsoft (MSFT)',
+					data: [69.4100, 69.3000, 69.0800, 68.8100, 69.0300, 68.9400, 69.0400, 69.3100, 68.4600, 68.3800],
+					backgroundColor: "rgba(54,162,235,0.4)",
+					borderColor: "rgba(54,162,235,1)",
+					borderWidth: 1,
+					lineTension: 0,
+					pointHoverRadius: 8,
+					pointRadius: 5,
+					pointBackgroundColor: "rgba(54,162,235,1)",	
+					pointHoverBackgroundColor: "rgba(204,0,0,1)",
+					pointHoverBorderColor: "rgba(128,0,0,1)"
+				},
+				{
+					label: 'KGHM (KGHM)',
+					data: [69.3000, 69.0800, 69.4100, 69.0000, 69.3100, 69.3900, 69.6300, 68.8600, 68.3800, 68.8100],
+					backgroundColor: "rgba(219,139,20,0.4)",
+					borderColor: "rgba(219,139,20,1)",
+					borderWidth: 1,
+					lineTension: 0,
+					pointHoverRadius: 8,
+					pointRadius: 5,
+					pointBackgroundColor: "rgba(219,139,20,1)",	
+					pointHoverBackgroundColor: "rgba(204,0,0,1)",
+					pointHoverBorderColor: "rgba(128,0,0,1)"
+				}
+				]
+			},
+			
+			options: {
+				tooltips: {
+					displayColors: false,
+					mode: 'x'
+				},
+				responsive: false,
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero:false
+						}
+					}]
+				}
+				
+			}
+		});
+		
+		function backupCanvas() {
+			var myChartOriginal = jQuery.extend(true, {}, myChart);
+			console.log(myChartOriginal);
+			return myChartOriginal;
+		}
+		
+		function getRandomInt(min, max) {
+			randValue= Math.floor(Math.random() * (max - min + 1)) + min;
+			//console.log("Field number " + randValue);
+			return randValue;
+		}
+		
+		function getRandomWithNeg(min, max) {
+			randValue = Math.random() * (max - min + 1) + min;
+			randValue = randValue.toFixed(2);
+			randValue *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+			console.log("Random stock price value: " + randValue);
+			return randValue;
+		}
+		
+		function addDataAndRefreshChart() {
+			for (var i=0; i < myChart.data.datasets.length; i++) {
+				fieldNo = getRandomInt(0,(myChart.data.datasets[0].data.length)-1);
+				var updatedValue = myChart.data.datasets[i].data[fieldNo] + getRandomWithNeg(-1,1);
+				updatedValue = Math.round((updatedValue + 0.00001) * 100) / 100;
+				myChart.data.datasets[i].data[fieldNo] = updatedValue;
+			}
+
+			myChart.update();
+		}
+
+	</script>
+
+	<button onclick="addDataAndRefreshChart()">Modify data and refresh chart</button>
+	<button onclick="location.reload()">Reset chart</button>
+
+	<p></p>
+
+	<p><b>Please provide your KGHM stock shares price: (input, with +/- selector)</b></p>
+	<input type="number" id="KGHMprovidedPrice" value="100.00" step="0.01" min="0.01">
+	<p><b>Number of shares:</b></p>
+	<input type="number" id="KGHMnumberofShares" value="1" step="1" min="0">
+
+
+	<h2>Dev comment (how it should work):</h2>
+	<p>If latest price from JSON > provided price: display "profit" + profit value (in green)</p>
+	<p>If latest price from JSON < provided price: display "loss" + loss value (in red)</p>
+	<p>If latest price from JSON == provided price: display "no profit" (in grey)</p>
+	<p></p>
+
+	<h2>Last dataset update (taken from JSON API):</h2>
+	<p id="demo"></p>
+
+	<script>
+
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	        myObj = JSON.parse(this.responseText);
+	        document.getElementById("demo").innerHTML = myObj["Meta Data"]["3. Last Refreshed"];
+	        console.log(myObj["Meta Data"]["3. Last Refreshed"]);
+	    }
+	};
+	xmlhttp.open("GET", "http://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=15min&outputsize=full&apikey=13OL", true);
+	xmlhttp.send();
+
+	</script>
+
+<!-- <script>
+	var main = $("#main");
+
+ $.ajax({
+    url: 'http://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=15min&outputsize=full&apikey=13OL',
+    type: "GET",
+    dataType: 'JSON',
+    success: function(response){
+        if (response.success) {
+            var footballers = response["Meta Data"];
+            console.log(footballers);
+        }
+        else{
+            alert("Oops, an error occured fetching the profiles.");
+        }
+    }
+   });
+</script> -->
+
+</body>
+</html>
+
