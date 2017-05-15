@@ -139,7 +139,8 @@
 	        console.log(myObj["Meta Data"]["3. Last Refreshed"]);
 	    }
 	};
-	xmlhttp.open("GET", "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=15min&outputsize=full&apikey=13OL", true);
+	//xmlhttp.open("GET", "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=15min&outputsize=full&apikey=13OL", true);
+	xmlhttp.open("GET", "MSFT.json", true);
 	xmlhttp.send();
 
 	</script>
