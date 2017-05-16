@@ -3,87 +3,95 @@
 <head>
 	<title>SPA profit calculator</title>
 	<meta charset="UTF-8">
+	<style>
+      table td:nth-of-type(2) {
+        text-align: right;
+        padding: 10px;
+      }
+
+    </style>
 </head>
 <body onload="backupCanvas()">
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<div class="container-fluid">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<canvas id="myChart" width="800" height="400"></canvas>
-	<script>
-		var ctx = document.getElementById("myChart").getContext("2d");
-		var myChart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: [
-				"2017-05-01",
-				"2017-05-02",
-				"2017-05-03",
-				"2017-05-04",
-				"2017-05-05",
-				"2017-05-08",
-				"2017-05-09",
-				"2017-05-10",
-				"2017-05-11",
-				"2017-05-12",
-				],
-				<!--"Red", "Blue", "Yellow", "Green", "Purple", "Orange"], -->
-				datasets: [{
-					label: 'Microsoft (MSFT)',
-					data: [69.4100, 69.3000, 69.0800, 68.8100, 69.0300, 68.9400, 69.0400, 69.3100, 68.4600, 68.3800],
-					backgroundColor: "rgba(54,162,235,0.4)",
-					borderColor: "rgba(54,162,235,1)",
-					borderWidth: 1,
-					lineTension: 0,
-					pointHoverRadius: 8,
-					pointRadius: 5,
-					pointBackgroundColor: "rgba(54,162,235,1)",	
-					pointHoverBackgroundColor: "rgba(204,0,0,1)",
-					pointHoverBorderColor: "rgba(128,0,0,1)"
+		<canvas id="myChart" width="800" height="400"></canvas>
+		<script>
+			var ctx = document.getElementById("myChart").getContext("2d");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: [
+					"2017-05-01",
+					"2017-05-02",
+					"2017-05-03",
+					"2017-05-04",
+					"2017-05-05",
+					"2017-05-08",
+					"2017-05-09",
+					"2017-05-10",
+					"2017-05-11",
+					"2017-05-12",
+					],
+					<!--"Red", "Blue", "Yellow", "Green", "Purple", "Orange"], -->
+					datasets: [{
+						label: 'Microsoft (MSFT)',
+						data: [69.4100, 69.3000, 69.0800, 68.8100, 69.0300, 68.9400, 69.0400, 69.3100, 68.4600, 68.3800],
+						backgroundColor: "rgba(54,162,235,0.4)",
+						borderColor: "rgba(54,162,235,1)",
+						borderWidth: 1,
+						lineTension: 0,
+						pointHoverRadius: 8,
+						pointRadius: 5,
+						pointBackgroundColor: "rgba(54,162,235,1)",	
+						pointHoverBackgroundColor: "rgba(204,0,0,1)",
+						pointHoverBorderColor: "rgba(128,0,0,1)"
+					},
+					{
+						label: 'KGHM (KGHM)',
+						data: [69.3000, 69.0800, 69.4100, 69.0000, 69.3100, 69.3900, 69.6300, 68.8600, 68.3800, 68.8100],
+						backgroundColor: "rgba(219,139,20,0.4)",
+						borderColor: "rgba(219,139,20,1)",
+						borderWidth: 1,
+						lineTension: 0,
+						pointHoverRadius: 8,
+						pointRadius: 5,
+						pointBackgroundColor: "rgba(219,139,20,1)",	
+						pointHoverBackgroundColor: "rgba(204,0,0,1)",
+						pointHoverBorderColor: "rgba(128,0,0,1)"
+					}
+					]
 				},
-				{
-					label: 'KGHM (KGHM)',
-					data: [69.3000, 69.0800, 69.4100, 69.0000, 69.3100, 69.3900, 69.6300, 68.8600, 68.3800, 68.8100],
-					backgroundColor: "rgba(219,139,20,0.4)",
-					borderColor: "rgba(219,139,20,1)",
-					borderWidth: 1,
-					lineTension: 0,
-					pointHoverRadius: 8,
-					pointRadius: 5,
-					pointBackgroundColor: "rgba(219,139,20,1)",	
-					pointHoverBackgroundColor: "rgba(204,0,0,1)",
-					pointHoverBorderColor: "rgba(128,0,0,1)"
+
+				options: {
+					tooltips: {
+						displayColors: false,
+						mode: 'x'
+					},
+					responsive: false,
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero:false
+							}
+						}]
+					}
+
 				}
-				]
-			},
-			
-			options: {
-				tooltips: {
-					displayColors: false,
-					mode: 'x'
-				},
-				responsive: false,
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero:false
-						}
-					}]
-				}
-				
+			});
+
+			function backupCanvas() {
+				var myChartOriginal = jQuery.extend(true, {}, myChart);
+				console.log(myChartOriginal);
+				return myChartOriginal;
 			}
-		});
-		
-		function backupCanvas() {
-			var myChartOriginal = jQuery.extend(true, {}, myChart);
-			console.log(myChartOriginal);
-			return myChartOriginal;
-		}
-		
-		function getRandomInt(min, max) {
-			randValue= Math.floor(Math.random() * (max - min + 1)) + min;
+
+			function getRandomInt(min, max) {
+				randValue= Math.floor(Math.random() * (max - min + 1)) + min;
 			//console.log("Field number " + randValue);
 			return randValue;
 		}
@@ -114,28 +122,56 @@
 
 	<p></p>
 
-	<p><b>Please provide your KGHM stock shares price: (input, with +/- selector)</b></p>
-	<input type="number" id="KGHMprovidedPrice" value="100.00" step="0.01" min="0.01">
-	<p><b>Number of shares:</b></p>
-	<input type="number" id="KGHMnumberofShares" value="1" step="1" min="0">
+	<p><b>Please provide your MSFT stock shares price: (input, with +/- selector)</b></p>
+	
+	<form name="shareInputFields" id="shareInputFields">
+		<input type="number" id="MSFTprovidedPrice" value="148.00" step="0.01" min="0.00">
+		<p></p>
+		<p><b>Number of shares:</b></p>
+		<input type="number" id="MSFTnumberofShares" value="1" step="1" min="0">
+	</form>
 
-
-	<h2>Dev comment (how it should work):</h2>
-	<p>If latest price from JSON > provided price: display "profit" + profit value (in green)</p>
-	<p>If latest price from JSON < provided price: display "loss" + loss value (in red)</p>
-	<p>If latest price from JSON == provided price: display "no profit" (in grey)</p>
-	<p></p>
-
-	<h2>Last dataset update (taken from JSON API):</h2>
+	<!-- <h2>Last dataset update (taken from JSON API):</h2>
 	<p id="demo"></p>
+	<p id="close"></p> -->
 
-	<script>
+	<h2>Data taken from <a href="https://marketdata.websol.barchart.com/getHistory.json?key=b7bfd3c020722aed1495055244cf156e&symbol=IBM&type=daily&startDate=20170410000000&order=desc&maxRecords=10">barchart JSON API</a> for MSFT:</h2>
+	<table class="table-striped">
+		<tr>
+			<td><b>Last update date: </b></td>
+			<td><span id="barchartLastUpdateDate"></span></td>
+		</tr>
+		<tr>
+			<td><b>Last update close price: </b></td>
+			<td><span id="barchartLastUpdatePrice"></span></td>
+		</tr>
+		<tr>
+			<td><b>First update date: </b></td>
+			<td><span id="barchartFirstUpdateDate"></span></td>
+		</tr>
+		<tr>
+			<td><b>First update close price: </b></td>
+			<td><span id="barchartFirstUpdatePrice"></span></td>
+		</tr>
+		<tr>
+			<td><b>Difference between Last update close price and provided price: </b></td>
+			<td><b><span id="barchartLastUpdatePriceDifference"></span></b></td>
+		</tr>
+		<tr>
+			<td><b>Your financial result: </b></td>
+			<td><b><span id="calculatedFinancialResult"></span></b></td>
+		</tr>
+
+	</table>
+
+<!-- 	<script>
 
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 	        myObj = JSON.parse(this.responseText);
-	        document.getElementById("demo").innerHTML = myObj["Meta Data"]["3. Last Refreshed"];
+	        // document.getElementById("demo").innerHTML = myObj["Meta Data"]["3. Last Refreshed"];
+	        document.getElementById("demo").innerHTML = myObj[0]["3. Last Refreshed"];
 	        console.log(myObj["Meta Data"]["3. Last Refreshed"]);
 	    }
 	};
@@ -143,7 +179,107 @@
 	xmlhttp.open("GET", "MSFT.json", true);
 	xmlhttp.send();
 
-	</script>
+</script> -->
+
+<!-- data from barchart API-->
+<script>
+
+	$(":input").bind('keyup mouseup', function () {
+		calculateSharePriceDifference();           
+	});
+
+	var xmlhttpBar = new XMLHttpRequest();
+	xmlhttpBar.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			stockData = JSON.parse(this.responseText);
+	        // document.getElementById("demo").innerHTML = myObj["Meta Data"]["3. Last Refreshed"];
+	        document.getElementById("barchartLastUpdateDate").innerHTML = stockData["results"][0]["tradingDay"];
+	        document.getElementById("barchartLastUpdatePrice").innerHTML = (stockData["results"][0]["close"]).toFixed(2);
+	        document.getElementById("barchartFirstUpdateDate").innerHTML = stockData["results"][stockData["results"].length-1]["tradingDay"];
+	        document.getElementById("barchartFirstUpdatePrice").innerHTML = (stockData["results"][stockData["results"].length-1]["close"]).toFixed(2);
+	        var MSFTprovidedPrice = document.getElementById("MSFTprovidedPrice").value;
+	        document.getElementById("barchartLastUpdatePriceDifference").innerHTML = (stockData["results"][0]["close"] - MSFTprovidedPrice).toFixed(2);
+	        //console.log(myObj["Meta Data"]["3. Last Refreshed"]);
+	        calculateSharePriceDifference();
+	    }
+	};
+	xmlhttpBar.open("GET", "https://marketdata.websol.barchart.com/getHistory.json?key=b7bfd3c020722aed1495055244cf156e&symbol=IBM&type=daily&startDate=20170410000000&order=desc&maxRecords=10", true);
+	xmlhttpBar.send();
+</script>
+
+<script>
+	function calculateSharePriceDifference() {
+		var MSFTprovidedPrice = document.getElementById("MSFTprovidedPrice").value;
+		// console.log("MSFT provided price: " + MSFTprovidedPrice);
+		var MSFTLastUpdatePrice = document.getElementById("barchartLastUpdatePrice").innerHTML;
+		// console.log("MSFTLastUpdatePrice: " + MSFTLastUpdatePrice);
+		var barchartLastUpdatePriceDifference = (MSFTprovidedPrice - MSFTLastUpdatePrice).toFixed(2);
+		// console.log("Difference: " + barchartLastUpdatePriceDifference);
+
+		document.getElementById("barchartLastUpdatePriceDifference").innerHTML = barchartLastUpdatePriceDifference;
+
+		var calculatedFinancialResult = (barchartLastUpdatePriceDifference * document.getElementById("MSFTnumberofShares").value).toFixed(2);
+		document.getElementById("calculatedFinancialResult").innerHTML = calculatedFinancialResult;
+
+		// stock results coloring
+		if (barchartLastUpdatePriceDifference > 0) {
+			document.getElementById("barchartLastUpdatePriceDifference").style.color = "green";
+		} else if (barchartLastUpdatePriceDifference < 0) {
+			document.getElementById("barchartLastUpdatePriceDifference").style.color = "red";
+		} else {
+			document.getElementById("barchartLastUpdatePriceDifference").style.color = "gray";
+		}
+
+		// Financial results coloring
+		if (calculatedFinancialResult > 0) {
+			document.getElementById("calculatedFinancialResult").style.color = "green";
+		} else if (calculatedFinancialResult < 0) {
+			document.getElementById("calculatedFinancialResult").style.color = "red";
+		} else {
+			document.getElementById("calculatedFinancialResult").style.color = "gray";
+		}
+
+		// colorElementByVariableValue(barchartLastUpdatePriceDifference);
+	}
+
+	// function getArgs(func) {
+	//   // First match everything inside the function argument parens.
+	//   var args = func.toString().match(/function\s.*?\(([^)]*)\)/)[1];
+	 
+	//   // Split the arguments string into an array comma delimited.
+	//   return args.split(',').map(function(arg) {
+	//     // Ensure no inline comments are parsed and trim the whitespace.
+	//     return arg.replace(/\/\*.*\*\//, '').trim();
+	//   }).filter(function(arg) {
+	//     // Ensure no undefined values are added.
+	//     return arg;
+	//   });
+	// }
+
+	function colorElementByVariableValue(varName) {
+		console.log("varname: " + varName);
+		//stock results coloring
+		if (varName > 0 ) {
+			document.getElementById(this).style.color = "green";
+		} else if (varName < 0) {
+			document.getElementById(this).style.color = "red";
+		} else {
+			document.getElementById(eval(varName)).style.color = "gray";
+		}
+	}
+
+		//stock results coloring
+		// if (barchartLastUpdatePriceDifference > 0 ) {
+		// 	document.getElementById("barchartLastUpdatePriceDifference").style.color = "green";
+		// } else if (barchartLastUpdatePriceDifference < 0) {
+		// 	document.getElementById("barchartLastUpdatePriceDifference").style.color = "red";
+		// } else {
+		// 	document.getElementById("barchartLastUpdatePriceDifference").style.color = "gray";
+		// }
+
+	
+
+</script>
 
 <!-- <script>
 	var main = $("#main");
@@ -163,7 +299,7 @@
     }
    });
 </script> -->
-
+	</div>
 </body>
 </html>
 
